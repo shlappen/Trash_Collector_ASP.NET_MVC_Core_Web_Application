@@ -1,0 +1,1 @@
+# Trash_Collector_ASP.NET_MVC_Core_Web_Application
