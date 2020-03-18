@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-TrashCollector-717AFF22-F422-409C-B57F-C4740E609B9B</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\Shared\Component.razor" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrashCollector.Data;
 
 namespace TrashCollector.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200318194852_Lookingtoseeroles")]
+    partial class Lookingtoseeroles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +50,8 @@ namespace TrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "436ba028-b2de-4ae6-9922-fd41fa29d6af",
-                            ConcurrencyStamp = "8a1985c0-3be3-4bad-a13e-e5a9ec88d8a4",
+                            Id = "71e2d958-45db-4e8d-b562-21a2d6a91341",
+                            ConcurrencyStamp = "bdec0caf-74a7-4f08-a7b7-db312a9ee3d6",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         });
