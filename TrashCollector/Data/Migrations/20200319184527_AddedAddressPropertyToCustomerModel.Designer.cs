@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrashCollector.Data;
 
 namespace TrashCollector.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200319184527_AddedAddressPropertyToCustomerModel")]
+    partial class AddedAddressPropertyToCustomerModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace TrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f7805bd6-a117-483c-a248-2071b7a331fa",
-                            ConcurrencyStamp = "2642b1ff-627c-4dd3-adfa-d9d9be64c294",
+                            Id = "2a7e2aff-8316-43de-a7ea-a6da3a89ba90",
+                            ConcurrencyStamp = "79537cd2-bd60-4f9c-950e-bdd91819792f",
                             Name = "Customer",
                             NormalizedName = "Customer"
                         },
                         new
                         {
-                            Id = "5660a446-a15f-44eb-93b4-ef234caaec8d",
-                            ConcurrencyStamp = "861251be-fb8e-4277-b276-da9a36470815",
+                            Id = "835c53b2-4c94-4cda-9d3e-c4b5a4d4f916",
+                            ConcurrencyStamp = "fa494f8d-af90-4a9a-a0fe-9fa8a770758c",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });
@@ -243,7 +245,7 @@ namespace TrashCollector.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CollectionDays");
+                    b.ToTable("CollectionDay");
 
                     b.HasData(
                         new

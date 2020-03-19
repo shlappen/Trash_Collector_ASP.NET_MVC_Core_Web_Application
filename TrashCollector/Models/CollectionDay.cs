@@ -8,7 +8,6 @@ namespace TrashCollector.Models
     public class CollectionDay
     {
         public int Id { get; set; }
-
         public string Day { get; set; }
     }
 }

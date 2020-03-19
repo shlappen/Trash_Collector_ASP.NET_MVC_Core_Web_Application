@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +10,6 @@ using TrashCollector.Models;
 
 namespace TrashCollector.Controllers
 {
-    [Authorize(Roles = "Customer")]
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,8 +22,7 @@ namespace TrashCollector.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-
-            var applicationDbContext = _context.Customers.Include(c => c.IdentityUser);
+            var applicationDbContext = _context.Customers.Include(c => c.Day).Include(c => c.IdentityUser);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,6 +35,7 @@ namespace TrashCollector.Controllers
             }
 
             var customer = await _context.Customers
+                .Include(c => c.Day)
                 .Include(c => c.IdentityUser)
                 .FirstOrDefaultAsync(m => m.CustomerId == id);
             if (customer == null)
@@ -53,6 +50,7 @@ namespace TrashCollector.Controllers
         public IActionResult Create()
         {
             Customer customer = new Customer();
+            ViewData["CollectionDayId"] = new SelectList(_context.CollectionDays, "Id", "Name");
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View(customer);
         }
@@ -62,16 +60,15 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,Name,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerId,Name,Address,IdentityUserId,CollectionDayId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                customer.IdentityUserId = userId;
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CollectionDayId"] = new SelectList(_context.CollectionDays, "Id", "Id", customer.CollectionDayId);
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
@@ -89,6 +86,7 @@ namespace TrashCollector.Controllers
             {
                 return NotFound();
             }
+            ViewData["CollectionDayId"] = new SelectList(_context.CollectionDays, "Id", "Id", customer.CollectionDayId);
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
@@ -98,7 +96,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,Name,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,Name,Address,IdentityUserId,CollectionDayId")] Customer customer)
         {
             if (id != customer.CustomerId)
             {
@@ -125,6 +123,7 @@ namespace TrashCollector.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CollectionDayId"] = new SelectList(_context.CollectionDays, "Id", "Id", customer.CollectionDayId);
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
@@ -138,6 +137,7 @@ namespace TrashCollector.Controllers
             }
 
             var customer = await _context.Customers
+                .Include(c => c.Day)
                 .Include(c => c.IdentityUser)
                 .FirstOrDefaultAsync(m => m.CustomerId == id);
             if (customer == null)

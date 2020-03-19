@@ -13,18 +13,16 @@ namespace TrashCollector.Models
         public int CustomerId { get; set; }
         [Display(Name = "Name")]
         public string Name { get; set; }
+        [Display(Name = "Collection Day")]
+        public DayOfWeek CollectionDay { get; set; }
+        [Display(Name = "One-Time Extra Pickup Day")]
+        public DayOfWeek ExtraCollectionDay { get; set; }
+
+        [Display(Name = "Address")]
+        public string Address { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-
-        [ForeignKey("CollectionDay")]
-        [Display(Name = "Collection Day")]
-        public int CollectionDayId { get; set; }
-        public CollectionDay Day { get; set; }
-
-        [NotMapped]
-        public IEnumerable<CollectionDay> Days { get; set; }
-
     }
 }

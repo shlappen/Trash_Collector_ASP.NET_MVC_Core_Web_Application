@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrashCollector.Data;
 
 namespace TrashCollector.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200319183927_seeddays")]
+    partial class seeddays
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace TrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f7805bd6-a117-483c-a248-2071b7a331fa",
-                            ConcurrencyStamp = "2642b1ff-627c-4dd3-adfa-d9d9be64c294",
+                            Id = "c3f4f05a-e780-453b-8a23-a9c709a2bfca",
+                            ConcurrencyStamp = "b4d7e536-e758-46af-9212-968ec8013c02",
                             Name = "Customer",
                             NormalizedName = "Customer"
                         },
                         new
                         {
-                            Id = "5660a446-a15f-44eb-93b4-ef234caaec8d",
-                            ConcurrencyStamp = "861251be-fb8e-4277-b276-da9a36470815",
+                            Id = "0b31c943-b1f3-4bd3-bb04-d8c62d0d3471",
+                            ConcurrencyStamp = "3f97f74e-0d22-4966-9d25-84578f16568f",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });
@@ -243,7 +245,7 @@ namespace TrashCollector.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CollectionDays");
+                    b.ToTable("CollectionDay");
 
                     b.HasData(
                         new
@@ -289,9 +291,6 @@ namespace TrashCollector.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CollectionDayId")
                         .HasColumnType("int");
