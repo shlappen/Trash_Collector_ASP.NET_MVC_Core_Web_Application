@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -49,7 +50,7 @@ namespace TrashCollector.Controllers
         public IActionResult Create()
         {
             Customer customer = new Customer();
-            //ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View(customer);
         }
 
@@ -64,8 +65,9 @@ namespace TrashCollector.Controllers
             {
                 if (customer.Id == 0)
                 {
-                    var newCustomer = _context.Users.Single(m => m.Id == customer.IdentityUserId);
-                    _context.Add(customer);
+                    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier); 
+                    customer.IdentityUserId = userId;
+                    _context.Customers.Add(customer);
                 }
                 else
                 {
@@ -78,7 +80,7 @@ namespace TrashCollector.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
 
