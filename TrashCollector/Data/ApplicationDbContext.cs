@@ -34,8 +34,38 @@ namespace TrashCollector.Data
                 {
                     Name = "Employee",
                     NormalizedName = "Employee"
-                }
-            );
+                });
+                builder.Entity<CollectionDay>()
+                .HasData(
+                new CollectionDay
+                {
+                    Id = 1,
+                    Day = "Sunday",
+                }, new CollectionDay
+                {
+                    Id = 2,
+                    Day = "Monday"
+                }, new CollectionDay
+                {
+                    Id = 3,
+                    Day = "Tuesday"
+                }, new CollectionDay
+                {
+                    Id = 4,
+                    Day = "Wednesday"
+                }, new CollectionDay
+                {
+                    Id = 5,
+                    Day = "Thursday"
+                }, new CollectionDay
+                {
+                    Id = 6,
+                    Day = "Friday"
+                }, new CollectionDay
+                {
+                    Id = 7,
+                    Day = "Saturday"
+                });
         }
     }
 }
