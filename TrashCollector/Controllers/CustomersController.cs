@@ -22,7 +22,7 @@ namespace TrashCollector.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Customers.Include(c => c.Day).Include(c => c.IdentityUser);
+            var applicationDbContext = _context.Customers.Include(c => c.IdentityUser);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,9 +35,8 @@ namespace TrashCollector.Controllers
             }
 
             var customer = await _context.Customers
-                .Include(c => c.Day)
                 .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
@@ -50,8 +49,7 @@ namespace TrashCollector.Controllers
         public IActionResult Create()
         {
             Customer customer = new Customer();
-            ViewData["CollectionDayId"] = new SelectList(_context.CollectionDays, "Id", "Name");
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
+            //ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View(customer);
         }
 
@@ -60,16 +58,27 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,Name,Address,IdentityUserId,CollectionDayId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,Name,CollectionDay,ExtraCollectionDay,Address,IdentityUserId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
+                if (customer.Id == 0)
+                {
+                    var newCustomer = _context.Users.Single(m => m.Id == customer.IdentityUserId);
+                    _context.Add(customer);
+                }
+                else
+                {
+                    var customerInDB = _context.Customers.Single(m => m.Id == customer.Id);
+                    customerInDB.Name = customer.Name;
+                    customerInDB.Address = customer.Address;
+                    customerInDB.CollectionDay = customer.CollectionDay;
+                    customerInDB.ExtraCollectionDay = customer.ExtraCollectionDay;
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CollectionDayId"] = new SelectList(_context.CollectionDays, "Id", "Id", customer.CollectionDayId);
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
+            //ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
 
@@ -86,7 +95,6 @@ namespace TrashCollector.Controllers
             {
                 return NotFound();
             }
-            ViewData["CollectionDayId"] = new SelectList(_context.CollectionDays, "Id", "Id", customer.CollectionDayId);
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
@@ -96,9 +104,9 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,Name,Address,IdentityUserId,CollectionDayId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CollectionDay,ExtraCollectionDay,Address,IdentityUserId")] Customer customer)
         {
-            if (id != customer.CustomerId)
+            if (id != customer.Id)
             {
                 return NotFound();
             }
@@ -112,7 +120,7 @@ namespace TrashCollector.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.CustomerId))
+                    if (!CustomerExists(customer.Id))
                     {
                         return NotFound();
                     }
@@ -123,7 +131,6 @@ namespace TrashCollector.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CollectionDayId"] = new SelectList(_context.CollectionDays, "Id", "Id", customer.CollectionDayId);
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
         }
@@ -137,9 +144,8 @@ namespace TrashCollector.Controllers
             }
 
             var customer = await _context.Customers
-                .Include(c => c.Day)
                 .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
@@ -161,7 +167,7 @@ namespace TrashCollector.Controllers
 
         private bool CustomerExists(int id)
         {
-            return _context.Customers.Any(e => e.CustomerId == id);
+            return _context.Customers.Any(e => e.Id == id);
         }
     }
 }

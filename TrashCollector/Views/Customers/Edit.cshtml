@@ -20,6 +20,16 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CollectionDay" class="control-label"></label>
+                <select asp-for="CollectionDay" class="form-control"></select>
+                <span asp-validation-for="CollectionDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExtraCollectionDay" class="control-label"></label>
+                <select asp-for="ExtraCollectionDay" class="form-control"></select>
+                <span asp-validation-for="ExtraCollectionDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
@@ -28,11 +38,6 @@
                 <label asp-for="IdentityUserId" class="control-label"></label>
                 <select asp-for="IdentityUserId" class="form-control" asp-items="ViewBag.IdentityUserId"></select>
                 <span asp-validation-for="IdentityUserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CollectionDayId" class="control-label"></label>
-                <select asp-for="CollectionDayId" class="form-control" asp-items="ViewBag.CollectionDayId"></select>
-                <span asp-validation-for="CollectionDayId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

@@ -10,11 +10,13 @@ namespace TrashCollector.Models
 {
     public class Customer
     {
-        public int CustomerId { get; set; }
+        public int Id { get; set; }
         [Display(Name = "Name")]
         public string Name { get; set; }
+
         [Display(Name = "Collection Day")]
-        public DayOfWeek CollectionDay { get; set; }
+        public DayOfWeek? CollectionDay { get; set; }
+
         [Display(Name = "One-Time Extra Pickup Day")]
         public DayOfWeek ExtraCollectionDay { get; set; }
 
