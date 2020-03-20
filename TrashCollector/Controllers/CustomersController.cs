@@ -74,6 +74,7 @@ namespace TrashCollector.Controllers
                     var customerInDB = _context.Customers.Single(m => m.Id == customer.Id);
                     customerInDB.Name = customer.Name;
                     customerInDB.Address = customer.Address;
+                    customerInDB.Zipcode = customer.Zipcode;
                     customerInDB.CollectionDay = customer.CollectionDay;
                     customerInDB.ExtraCollectionDay = customer.ExtraCollectionDay;
                 }
