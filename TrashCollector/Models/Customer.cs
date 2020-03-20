@@ -29,15 +29,15 @@ namespace TrashCollector.Models
         [Required(ErrorMessage = "Zip Code is Required")]
         public string ZipCode { get; set; }
 
-        [Display(Name = "Pickup Suspension Start Date")]
+        [Display(Name = "Suspend Pickup Start Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        [Display(Name = "Pickup Suspension End Date")]
+        [Display(Name = "Suspend Pickup End Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
