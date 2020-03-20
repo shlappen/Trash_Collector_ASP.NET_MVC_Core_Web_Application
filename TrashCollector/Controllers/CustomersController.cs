@@ -59,7 +59,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CollectionDay,ExtraCollectionDay,Address,ZipCode,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,Name,CollectionDay,Address,ZipCode,IdentityUserId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +76,6 @@ namespace TrashCollector.Controllers
                     customerInDB.Address = customer.Address;
                     customerInDB.ZipCode = customer.ZipCode;
                     customerInDB.CollectionDay = customer.CollectionDay;
-                    customerInDB.ExtraCollectionDay = customer.ExtraCollectionDay;
                 }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Details), new { id = customer.Id.ToString() });
@@ -107,7 +106,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CollectionDay,ExtraCollectionDay,Address,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CollectionDay,ExtraCollectionDay,Address,StartDate,EndDate,ZipCode,IdentityUserId")] Customer customer)
         {
             if (id != customer.Id)
             {
@@ -118,6 +117,14 @@ namespace TrashCollector.Controllers
             {
                 try
                 {
+                    var customerInDB = _context.Customers.Single(m => m.Id == customer.Id);
+                    customerInDB.Name = customer.Name;
+                    customerInDB.Address = customer.Address;
+                    customerInDB.ZipCode = customer.ZipCode;
+                    customerInDB.CollectionDay = customer.CollectionDay;
+                    customerInDB.ExtraCollectionDay = customer.ExtraCollectionDay;
+                    customerInDB.StartDate = customer.StartDate;
+                    customerInDB.EndDate = customer.EndDate;
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
