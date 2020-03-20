@@ -18,7 +18,7 @@ namespace TrashCollector.Models
         public DayOfWeek? CollectionDay { get; set; }
 
         [Display(Name = "One-Time Extra Pickup Day")]
-        public DayOfWeek ExtraCollectionDay { get; set; }
+        public DayOfWeek? ExtraCollectionDay { get; set; }
 
         [Display(Name = "Address")]
         public string Address { get; set; }
