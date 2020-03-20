@@ -39,7 +39,7 @@ namespace TrashCollector.Controllers
 
             var employee = await _context.Employees
                 .Include(e => e.IdentityUser)
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (employee == null)
             {
                 return NotFound();
@@ -61,7 +61,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,Name,IdentityUserId")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,Name,IdentityUserId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -97,9 +97,9 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,Name,IdentityUserId")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IdentityUserId")] Employee employee)
         {
-            if (id != employee.EmployeeId)
+            if (id != employee.Id)
             {
                 return NotFound();
             }
@@ -113,7 +113,7 @@ namespace TrashCollector.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.EmployeeId))
+                    if (!EmployeeExists(employee.Id))
                     {
                         return NotFound();
                     }
@@ -138,7 +138,7 @@ namespace TrashCollector.Controllers
 
             var employee = await _context.Employees
                 .Include(e => e.IdentityUser)
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (employee == null)
             {
                 return NotFound();
@@ -160,7 +160,7 @@ namespace TrashCollector.Controllers
 
         private bool EmployeeExists(int id)
         {
-            return _context.Employees.Any(e => e.EmployeeId == id);
+            return _context.Employees.Any(e => e.Id == id);
         }
     }
 }
