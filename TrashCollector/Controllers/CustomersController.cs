@@ -59,7 +59,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CollectionDay,ExtraCollectionDay,Address,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,Name,CollectionDay,ExtraCollectionDay,Address,ZipCode,IdentityUserId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -74,15 +74,15 @@ namespace TrashCollector.Controllers
                     var customerInDB = _context.Customers.Single(m => m.Id == customer.Id);
                     customerInDB.Name = customer.Name;
                     customerInDB.Address = customer.Address;
-                    customerInDB.Zipcode = customer.Zipcode;
+                    customerInDB.ZipCode = customer.ZipCode;
                     customerInDB.CollectionDay = customer.CollectionDay;
                     customerInDB.ExtraCollectionDay = customer.ExtraCollectionDay;
                 }
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = customer.Id.ToString() });
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-            return View(customer);
+            return View(customer.Id);
         }
 
         // GET: Customers/Edit/5

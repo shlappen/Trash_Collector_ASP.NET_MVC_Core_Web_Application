@@ -20,6 +20,7 @@ namespace TrashCollector.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 

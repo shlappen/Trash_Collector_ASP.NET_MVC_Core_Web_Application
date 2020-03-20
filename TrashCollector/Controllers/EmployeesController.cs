@@ -51,9 +51,9 @@ namespace TrashCollector.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            Employee Employee = new Employee();
+            Employee employee = new Employee();
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            return View(employee);
         }
 
         // POST: Employees/Create
@@ -61,13 +61,23 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,IdentityUserId")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,Name,ZipCode,IdentityUserId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                employee.IdentityUserId = userId;
-                _context.Add(employee);
+                if (employee.Id == 0)
+                {
+                    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    employee.IdentityUserId = userId;
+                    _context.Add(employee);
+                }
+                else
+                {
+                    var employeeInDB = _context.Employees.Single(m => m.Id == employee.Id);
+                    employeeInDB.Name = employee.Name;
+                    employeeInDB.ZipCode = employee.ZipCode;
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -97,7 +107,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IdentityUserId")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ZipCode,IdentityUserId")] Employee employee)
         {
             if (id != employee.Id)
             {

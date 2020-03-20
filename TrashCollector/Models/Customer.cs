@@ -20,11 +20,24 @@ namespace TrashCollector.Models
         [Display(Name = "One-Time Extra Pickup Day")]
         public DayOfWeek? ExtraCollectionDay { get; set; }
 
-        [Display(Name = "Address")]
+        [Display(Name = "Street Address")]
+        [Required(ErrorMessage = "Address is Required")]
         public string Address { get; set; }
 
-        [Display(Name = "Zipcode")]
-        public int Zipcode { get; set; }
+        [Display(Name = "Zip Code")]
+        //[RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Invalid Zip")]
+        [Required(ErrorMessage = "Zip Code is Required")]
+        public string ZipCode { get; set; }
+
+        [Display(Name = "Pickup Suspension Start Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "Pickup Suspension End Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime EndDate { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

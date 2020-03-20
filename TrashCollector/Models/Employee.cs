@@ -15,8 +15,10 @@ namespace TrashCollector.Models
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Zipcode")]
-        public int Zipcode { get; set; }
+        [Display(Name = "Zip Code")]
+        //[RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Invalid Zip")]
+        [Required(ErrorMessage = "Zip Code is Required")]
+        public string ZipCode { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

@@ -11,39 +11,48 @@
     <h4>Customer</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CollectionDay)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CollectionDay)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExtraCollectionDay)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExtraCollectionDay)
-        </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Address)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Address)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdentityUser)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ZipCode)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdentityUser.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ZipCode)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExtraCollectionDay)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExtraCollectionDay)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExtraCollectionDay)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExtraCollectionDay)
+        </dd>
+
+
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
-    <a asp-action="Index">Back to List</a>
+    @*<a asp-action="Index">Back to List</a>*@
 </div>

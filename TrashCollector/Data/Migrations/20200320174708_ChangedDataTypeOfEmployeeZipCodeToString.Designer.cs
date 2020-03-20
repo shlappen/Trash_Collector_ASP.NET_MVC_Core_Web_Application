@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrashCollector.Data;
 
 namespace TrashCollector.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200320174708_ChangedDataTypeOfEmployeeZipCodeToString")]
+    partial class ChangedDataTypeOfEmployeeZipCodeToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace TrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "81fba3e8-e707-4822-a4ec-f7911947482b",
-                            ConcurrencyStamp = "8f449b60-2a7f-45cf-9e1c-7d6b4b6c28e3",
+                            Id = "17d0d96b-c967-4bbc-b2b7-b89cc3ab0b74",
+                            ConcurrencyStamp = "68706e40-4da2-4150-9a96-d3dd9127abcc",
                             Name = "Customer",
                             NormalizedName = "Customer"
                         },
                         new
                         {
-                            Id = "f3c91fab-42a7-44a3-bb21-00ab27b17cc3",
-                            ConcurrencyStamp = "c9b4d0ad-1a55-4237-91dc-621ec4d90949",
+                            Id = "48237b0f-330b-43b6-bd7b-344639b8f9e1",
+                            ConcurrencyStamp = "125fc765-6b08-43ab-9713-c44ad975acf3",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });
@@ -245,9 +247,6 @@ namespace TrashCollector.Data.Migrations
                     b.Property<int?>("CollectionDay")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("ExtraCollectionDay")
                         .HasColumnType("int");
 
@@ -256,9 +255,6 @@ namespace TrashCollector.Data.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("ZipCode")
                         .IsRequired()
