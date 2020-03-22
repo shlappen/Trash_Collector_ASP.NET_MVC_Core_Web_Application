@@ -106,7 +106,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CollectionDay,ExtraCollectionDay,Address,StartDate,EndDate,ZipCode,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CollectionDay,ExtraCollectionDay,Address,StartDate,EndDate,ZipCode")] Customer customer)
         {
             if (id != customer.Id)
             {
@@ -125,7 +125,7 @@ namespace TrashCollector.Controllers
                     customerInDB.ExtraCollectionDay = customer.ExtraCollectionDay;
                     customerInDB.StartDate = customer.StartDate;
                     customerInDB.EndDate = customer.EndDate;
-                    _context.Update(customer);
+                    //_context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -139,10 +139,10 @@ namespace TrashCollector.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = customer.Id.ToString() });
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-            return View(customer);
+            return View(customer.Id);
         }
 
         // GET: Customers/Delete/5
