@@ -26,6 +26,9 @@ namespace TrashCollector.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Customers.Include(e => e.IdentityUser);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+            ViewBag.EmployeeZipCode = employee.ZipCode;
             return View(await applicationDbContext.ToListAsync());
         }
 
