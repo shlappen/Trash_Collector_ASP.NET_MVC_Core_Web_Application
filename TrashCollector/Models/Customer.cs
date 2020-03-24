@@ -41,8 +41,17 @@ namespace TrashCollector.Models
 
         [Display(Name = "Balance")]
         [DataType(DataType.Currency)]
-        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal Balance { get; set; }
+
+        [Display(Name = "Regular Pickup Confirmation")]
+        [DataType(DataType.Date)]
+        public DateTime? PickupConfirmationDate { get; set; }
+
+        [Display(Name = "One-Time Pickup Confirmation")]
+        [DataType(DataType.Date)]
+        public DateTime? ExtraCollectionDayConfirmation { get; set; }
+
+
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

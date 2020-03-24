@@ -72,7 +72,7 @@ namespace TrashCollector.Controllers
                 .Where(c => c.ZipCode == employee.ZipCode)
                 .Where(c => c.StartDate > selectedDate || c.EndDate < selectedDate);
 
-            //send variables to view for display
+            //send data 
             ViewBag.Day = Day;
             ViewBag.Date = selectedDate.ToString("MM-dd-yyyy");
             return View(await applicationDbContext.ToListAsync());
@@ -137,6 +137,8 @@ namespace TrashCollector.Controllers
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
             if (id == null)
             {
                 return NotFound();
@@ -147,7 +149,7 @@ namespace TrashCollector.Controllers
             {
                 return NotFound();
             }
-            //ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
             return View(customer);
         }
 
@@ -156,9 +158,13 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ZipCode,IdentityUserId")] Employee employee)
+        public async Task<IActionResult> Edit(int? id, [Bind("Balance, Address, ZipCode, PickupConfirmationDate, ExtraCollectionDayConfirmation ")]Customer customer)
         {
-            if (id != employee.Id)
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+            customer = _context.Customers.Single(m => m.Id == id);
+
+            if (id != customer.Id)
             {
                 return NotFound();
             }
@@ -167,12 +173,14 @@ namespace TrashCollector.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
+                    customer.PickupConfirmationDate = DateTime.Now;
+                    customer.Balance += 20;
+                    _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.Id))
+                    if (!EmployeeExists(customer.Id))
                     {
                         return NotFound();
                     }
@@ -183,8 +191,9 @@ namespace TrashCollector.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
-            return View(employee);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
+            return View(customer);
+        
         }
 
         // GET: Employees/Delete/5

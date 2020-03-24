@@ -31,6 +31,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.EndDate)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -38,35 +41,38 @@
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
+        <tr>
+            <td>
 
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CollectionDay)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExtraCollectionDay)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ZipCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CollectionDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExtraCollectionDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZipCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Balance)
+            </td>
 
 
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                </td>
-            </tr>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+            </td>
+        </tr>
         }
 
     </tbody>
