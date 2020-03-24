@@ -1,11 +1,47 @@
 ﻿@model IEnumerable<TrashCollector.Models.Customer>
 
-@{ 
-        ViewData["Title"] = "Today's Collections";
+
+@{
+    ViewData["Title"] = "Today's Collections";
     Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
 }
 
 <h1>Today's Pickups</h1>
+@using (Html.BeginForm("Filter", "Employees"))
+{
+    @Html.ValidationSummary(true)
+<fieldset>
+    <legend>Display</legend>
+    Select Day
+    @Html.DropDownList("Day", String.Empty)
+    <p>
+
+        <input type="submit" value="Submit" />
+    </p>
+</fieldset>
+}
+@*<div class="form-group">
+    @{ var defaultDay = DateTime.Today.DayOfWeek;}*@
+    @*<div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>"Html.GetEnumSelectList<DayOfWeek>()"
+        </div>*@
+    @*<select id="selectedDay" class="form-control" name="selectedDay" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+        <option value="">
+            Display Different Day
+        </option>*@
+
+    @*</select>
+        <label asp-for="CollectionDay" class="control-label"></label>
+        <select asp-for="SelectedDay" class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+            <option value="">Choose your pickup day</option>*@
+    @*</select>*@
+
+    @*<a asp-action="Filter"><input id="selectedDay" name="selectedDay" input type="submit" value="Display" class="btn btn-primary" /></a>*@
+    @*</div>*@
+    @*</fieldset>*@
+@*</div>*@
 <table class="table">
     <thead>
         <tr>
@@ -36,15 +72,11 @@
         {
             var today = DateTime.Today.DayOfWeek;
             var todaysDate = DateTime.Today;
-
-            @if ((item.CollectionDay == today ||
-
-                item.ExtraCollectionDay == today) 
-                &&
-                item.ZipCode == @ViewBag.EmployeeZipCode 
-                &&
-                (item.StartDate > todaysDate ||
-                item.EndDate < todaysDate))
+            @if ((Equals(item.CollectionDay, today)) ||
+          Equals(item.ExtraCollectionDay, today)
+            &&
+            (item.StartDate > todaysDate ||
+            item.EndDate < todaysDate))
             {
                 <tr>
                     <td>
@@ -66,18 +98,19 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.EndDate)
                     </td>
-                    
-                
+
+
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                         @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+
 
 @*<h1>Index</h1>
 

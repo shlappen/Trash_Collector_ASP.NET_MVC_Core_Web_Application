@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TrashCollector.Models.Customer>
+
+@{
+    ViewData["Title"] = "Filter";
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+}
+
+<h1>Pickups</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CollectionDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZipCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var item in Model)
+        {
+            //var today = DateTime.Today.DayOfWeek;
+            //var day = ViewBag.Day;
+            //var todaysDate = DateTime.This;
+            @if ((Equals(item.CollectionDay, ViewBag.Day)) ||
+       Equals(item.ExtraCollectionDay, ViewBag.Day))
+            //&&
+            //(item.StartDate > todaysDate ||
+            //item.EndDate < todaysDate))
+            {
+                <tr>
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CollectionDay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ZipCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

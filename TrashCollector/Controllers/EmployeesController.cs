@@ -25,13 +25,38 @@ namespace TrashCollector.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            //Get Employee who is signed in
+            string defaultDay = DateTime.Today.DayOfWeek.ToString();
+
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
 
-            //Get employee who is signed in's zipcode
-            ViewBag.EmployeeZipCode = employee.ZipCode;
+            List<SelectListItem> days = new List<SelectListItem>();
+            days.Add(new SelectListItem { Text = "Sunday", Value = "0" });
+            days.Add(new SelectListItem { Text = "Monday", Value = "1" });
+            days.Add(new SelectListItem { Text = "Tuesday", Value = "2" });
+            days.Add(new SelectListItem { Text = "Wednesday", Value = "3" });
+            days.Add(new SelectListItem { Text = "Thursday", Value = "4" });
+            days.Add(new SelectListItem { Text = "Friday", Value = "5" });
+            days.Add(new SelectListItem { Text = "Saturday", Value = "6" });
+            ViewBag.Day = new SelectList(days, "Value", "Text", defaultDay);
+
+            //ViewData["CollectionDay"] = new SelectList(_context.Customers, "CollectionDay", "CollectionDay");
             var applicationDbContext = _context.Customers.Where(c => c.ZipCode == employee.ZipCode);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Filter(DayOfWeek? day)
+        {
+            
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+
+            var applicationDbContext = _context.Customers
+                .Where(c => c.CollectionDay == day || c.ExtraCollectionDay == day)
+                .Where(c => c.ZipCode == employee.ZipCode);
+            ViewBag.Day = day;
             return View(await applicationDbContext.ToListAsync());
         }
 
