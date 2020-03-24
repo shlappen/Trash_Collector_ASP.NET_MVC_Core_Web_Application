@@ -25,11 +25,6 @@ namespace TrashCollector.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            string defaultDay = DateTime.Today.DayOfWeek.ToString();
-
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
-
             List<SelectListItem> days = new List<SelectListItem>();
             days.Add(new SelectListItem { Text = "Sunday", Value = "0" });
             days.Add(new SelectListItem { Text = "Monday", Value = "1" });
@@ -38,9 +33,25 @@ namespace TrashCollector.Controllers
             days.Add(new SelectListItem { Text = "Thursday", Value = "4" });
             days.Add(new SelectListItem { Text = "Friday", Value = "5" });
             days.Add(new SelectListItem { Text = "Saturday", Value = "6" });
-            ViewBag.Day = new SelectList(days, "Value", "Text", defaultDay);
+            ViewBag.Day = new SelectList(days, "Value", "Text", $"{(int)DateTime.Today.DayOfWeek}");
 
-            //ViewData["CollectionDay"] = new SelectList(_context.Customers, "CollectionDay", "CollectionDay");
+            //string defaultDay = DateTime.Today.DayOfWeek.ToString();
+            //var list = new List<SelectListItem>();
+            //var today = DateTime.Now;
+            //var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>();
+
+            //foreach (var item in weekDays)
+            //{
+            //    var listItem = new SelectListItem { Value = item.ToString(), Text = item.ToString() };
+            //    //listItem.Selected = today.Day == item.Day;
+            //    list.Add(listItem);
+            //}
+            //ViewBag.Fechas = list;
+            //ViewBag.Day = new SelectList(weekDays, "Value", "Text", DateTime.Today.DayOfWeek);
+            Enum.GetValues(typeof(DayOfWeek)).GetValue(Convert.ToInt32(DateTime.Today.DayOfWeek));
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+
             var applicationDbContext = _context.Customers.Where(c => c.ZipCode == employee.ZipCode);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -49,7 +60,6 @@ namespace TrashCollector.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Filter(DayOfWeek? day)
         {
-            
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
 
