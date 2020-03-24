@@ -25,6 +25,7 @@ namespace TrashCollector.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
+            //need to come back to this and try to add the system.DayOfWeek to the selectlist maybe with foreach?
             List<SelectListItem> days = new List<SelectListItem>();
             days.Add(new SelectListItem { Text = "Sunday", Value = "0" });
             days.Add(new SelectListItem { Text = "Monday", Value = "1" });
@@ -35,12 +36,7 @@ namespace TrashCollector.Controllers
             days.Add(new SelectListItem { Text = "Saturday", Value = "6" });
             ViewBag.Day = new SelectList(days, "Value", "Text", $"{(int)DateTime.Today.DayOfWeek}");
 
-
-            //string defaultDay = DateTime.Today.DayOfWeek.ToString();
-            //var list = new List<SelectListItem>();
-            //var today = DateTime.Now;
             //var weekDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>();
-
             //foreach (var item in weekDays)
             //{
             //    var listItem = new SelectListItem { Value = item.ToString(), Text = item.ToString() };
@@ -48,8 +44,6 @@ namespace TrashCollector.Controllers
             //    list.Add(listItem);
             //}
 
-            //ViewBag.Day = new SelectList(weekDays, "Value", "Text", DateTime.Today.DayOfWeek);
-            //Enum.GetValues(typeof(DayOfWeek)).GetValue(Convert.ToInt32(DateTime.Today.DayOfWeek));
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
 
@@ -61,17 +55,24 @@ namespace TrashCollector.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Filter(DayOfWeek? Day)
         {
+            //Get employee
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
 
+            //What day of the week is it today?
             DayOfWeek today = DateTime.Today.DayOfWeek;
+            //What date was Sunday of this week?
             DateTime sundayOfThisWeek = DateTime.Today.Subtract(new TimeSpan(Convert.ToInt32(today), 0, 0, 0));
+            //What date did the user select? Add the int value of the day that the user selected to Sunday's date.
             DateTime selectedDate = sundayOfThisWeek.AddDays(Convert.ToDouble(Day));
 
+            //apply filtering to db with linq
             var applicationDbContext = _context.Customers
                 .Where(c => c.CollectionDay == Day || c.ExtraCollectionDay == Day)
                 .Where(c => c.ZipCode == employee.ZipCode)
                 .Where(c => c.StartDate > selectedDate || c.EndDate < selectedDate);
+
+            //send variables to view for display
             ViewBag.Day = Day;
             ViewBag.Date = selectedDate.ToString("MM-dd-yyyy");
             return View(await applicationDbContext.ToListAsync());
@@ -141,13 +142,13 @@ namespace TrashCollector.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
-            return View(employee);
+            //ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
+            return View(customer);
         }
 
         // POST: Employees/Edit/5

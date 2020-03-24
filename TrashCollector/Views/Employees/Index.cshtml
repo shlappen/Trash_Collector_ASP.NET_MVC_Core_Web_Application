@@ -19,28 +19,7 @@
         </p>
     </fieldset>
 }
-@*<div class="form-group">
-    @{ var defaultDay = DateTime.Today.DayOfWeek;}*@
-@*<div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>"Html.GetEnumSelectList<DayOfWeek>()"
-    </div>*@
-@*<select id="selectedDay" class="form-control" name="selectedDay" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
-    <option value="">
-        Display Different Day
-    </option>*@
 
-@*</select>
-    <label asp-for="CollectionDay" class="control-label"></label>
-    <select asp-for="SelectedDay" class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
-        <option value="">Choose your pickup day</option>*@
-@*</select>*@
-
-@*<a asp-action="Filter"><input id="selectedDay" name="selectedDay" input type="submit" value="Display" class="btn btn-primary" /></a>*@
-@*</div>*@
-@*</fieldset>*@
-@*</div>*@
 <table class="table">
     <thead>
         <tr>
