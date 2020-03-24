@@ -5,8 +5,8 @@
     Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
 }
 
-<h1>Pickups</h1>
-
+<h1>@ViewBag.Day's Pickups</h1>
+<h2>@ViewBag.Date</h2>
 <table class="table">
     <thead>
         <tr>
@@ -36,48 +36,38 @@
     </thead>
     <tbody>
 
-
         @foreach (var item in Model)
         {
-            //var today = DateTime.Today.DayOfWeek;
-            //var day = ViewBag.Day;
-            //var todaysDate = DateTime.This;
-            @if ((Equals(item.CollectionDay, ViewBag.Day)) ||
-       Equals(item.ExtraCollectionDay, ViewBag.Day))
-            //&&
-            //(item.StartDate > todaysDate ||
-            //item.EndDate < todaysDate))
-            {
-        <tr>
-            <td>
+            <tr>
+                <td>
 
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CollectionDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExtraCollectionDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ZipCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CollectionDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExtraCollectionDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZipCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
 
 
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            </td>
-        </tr>
-            }
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
         }
+
     </tbody>
 </table>

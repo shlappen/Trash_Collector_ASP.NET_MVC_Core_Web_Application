@@ -35,6 +35,7 @@ namespace TrashCollector.Controllers
             days.Add(new SelectListItem { Text = "Saturday", Value = "6" });
             ViewBag.Day = new SelectList(days, "Value", "Text", $"{(int)DateTime.Today.DayOfWeek}");
 
+
             //string defaultDay = DateTime.Today.DayOfWeek.ToString();
             //var list = new List<SelectListItem>();
             //var today = DateTime.Now;
@@ -46,9 +47,9 @@ namespace TrashCollector.Controllers
             //    //listItem.Selected = today.Day == item.Day;
             //    list.Add(listItem);
             //}
-            //ViewBag.Fechas = list;
+
             //ViewBag.Day = new SelectList(weekDays, "Value", "Text", DateTime.Today.DayOfWeek);
-            Enum.GetValues(typeof(DayOfWeek)).GetValue(Convert.ToInt32(DateTime.Today.DayOfWeek));
+            //Enum.GetValues(typeof(DayOfWeek)).GetValue(Convert.ToInt32(DateTime.Today.DayOfWeek));
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
 
@@ -58,15 +59,21 @@ namespace TrashCollector.Controllers
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Filter(DayOfWeek? day)
+        public async Task<IActionResult> Filter(DayOfWeek? Day)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
 
+            DayOfWeek today = DateTime.Today.DayOfWeek;
+            DateTime sundayOfThisWeek = DateTime.Today.Subtract(new TimeSpan(Convert.ToInt32(today), 0, 0, 0));
+            DateTime selectedDate = sundayOfThisWeek.AddDays(Convert.ToDouble(Day));
+
             var applicationDbContext = _context.Customers
-                .Where(c => c.CollectionDay == day || c.ExtraCollectionDay == day)
-                .Where(c => c.ZipCode == employee.ZipCode);
-            ViewBag.Day = day;
+                .Where(c => c.CollectionDay == Day || c.ExtraCollectionDay == Day)
+                .Where(c => c.ZipCode == employee.ZipCode)
+                .Where(c => c.StartDate > selectedDate || c.EndDate < selectedDate);
+            ViewBag.Day = Day;
+            ViewBag.Date = selectedDate.ToString("MM-dd-yyyy");
             return View(await applicationDbContext.ToListAsync());
         }
 
