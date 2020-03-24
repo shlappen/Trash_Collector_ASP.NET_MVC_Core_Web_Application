@@ -25,10 +25,13 @@ namespace TrashCollector.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Customers.Include(e => e.IdentityUser);
+            //Get Employee who is signed in
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var employee = _context.Employees.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+
+            //Get employee who is signed in's zipcode
             ViewBag.EmployeeZipCode = employee.ZipCode;
+            var applicationDbContext = _context.Customers.Where(c => c.ZipCode == employee.ZipCode);
             return View(await applicationDbContext.ToListAsync());
         }
 
