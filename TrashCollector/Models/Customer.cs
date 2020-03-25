@@ -43,7 +43,7 @@ namespace TrashCollector.Models
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
 
-        [Display(Name = "Regular Pickup Confirmation")]
+        [Display(Name = "Pickup Confirmation Date")]
         [DataType(DataType.Date)]
         public DateTime? PickupConfirmationDate { get; set; }
 

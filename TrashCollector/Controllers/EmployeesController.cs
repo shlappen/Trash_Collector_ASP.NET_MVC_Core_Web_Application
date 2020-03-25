@@ -63,7 +63,7 @@ namespace TrashCollector.Controllers
             DayOfWeek today = DateTime.Today.DayOfWeek;
             //What date was Sunday of this week?
             DateTime sundayOfThisWeek = DateTime.Today.Subtract(new TimeSpan(Convert.ToInt32(today), 0, 0, 0));
-            //What date did the user select? Add the int value of the day that the user selected to Sunday's date.
+            //What is the date of the the user selected? Add the int value of the day that the user selected to Sunday's date.
             DateTime selectedDate = sundayOfThisWeek.AddDays(Convert.ToDouble(Day));
 
             //apply filtering to db with linq
@@ -86,15 +86,15 @@ namespace TrashCollector.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
+            var customer = await _context.Customers
                 .Include(e => e.IdentityUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(customer);
         }
 
         // GET: Employees/Create
